@@ -3,7 +3,7 @@ A machine learning project that predicts house prices based on key property feat
 
 # 🚀 Features
 
-Predicts property prices based on user input
-Visualizes data trends and correlations
-Uses ML pipeline for preprocessing and training
-Easily extendable to other datasets or models
+- Predicts property prices based on user input
+- Visualizes data trends and correlations
+- Uses ML pipeline for preprocessing and training
+- Easily extendable to other datasets or models
