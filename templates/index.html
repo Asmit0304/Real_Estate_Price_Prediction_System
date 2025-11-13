@@ -111,24 +111,44 @@
     </div>
 
     <script>
-      function form_handler(event) {
-        event.preventDefault();
-      }
+  function form_handler(event) {
+    event.preventDefault();
+  }
 
-      function send_data() {
-        document.querySelector('form').addEventListener("submit", form_handler);
-        var fd = new FormData(document.querySelector('form'));
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/predict', true);
-        document.getElementById("prediction").innerHTML = "Wait predicting the price!...";
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == XMLHttpRequest.DONE) {
-            document.getElementById('prediction').innerHTML = "Prediction: ₹" + xhr.responseText;
-          }
-        };
-        xhr.send(fd);
+  function send_data() {
+    const location = document.getElementById("location").value.trim();
+    const bhk = document.getElementById("bhk").value.trim();
+    const bath = document.getElementById("bath").value.trim();
+    const sqft = document.getElementById("total_sqft").value.trim();
+
+    // Basic validation
+    if (!location || !bhk || !bath || !sqft) {
+      document.getElementById("prediction").innerHTML = "⚠ Please fill all fields before predicting...";
+      document.getElementById("prediction").style.color = "Red";
+      return;
+    }
+
+    document.querySelector('form').addEventListener("submit", form_handler);
+    var fd = new FormData(document.querySelector('form'));
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/predict', true);
+    document.getElementById("prediction").innerHTML = "Wait predicting the price!...";
+    document.getElementById("prediction").style.color = "white";
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          document.getElementById('prediction').innerHTML = "Prediction: ₹" + xhr.responseText;
+          document.getElementById('prediction').style.color = "white";
+        } else {
+          document.getElementById('prediction').innerHTML = "⚠ Error in prediction. Please check inputs.";
+          document.getElementById('prediction').style.color = "red";
+        }
       }
-    </script>
+    };
+    xhr.send(fd);
+  }
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   </body>
